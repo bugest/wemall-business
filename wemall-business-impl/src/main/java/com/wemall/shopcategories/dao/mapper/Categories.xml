@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wemall.shopcategories.dao.CategoriesMapper" >
+<mapper namespace="com.wemall.shopcategories.dao.CategoriesDao" >
   <resultMap id="BaseResultMap" type="com.wemall.shopcategories.entity.Categories" >
     <!--
       WARNING - @mbggenerated
@@ -29,6 +29,11 @@
     from shop_categories
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAllCategories" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from shop_categories
+	</select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
