@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wemall.shopcategories.entity.Categories;
+import com.wemall.shopcategories.model.CategoryModel;
 import com.wemall.shopcategories.service.CategoriesService;
 
 @Controller
@@ -19,7 +20,8 @@ public class CategoriesController {
 	
 	@ResponseBody
 	@RequestMapping("/selectAllCategories")
-	public List<Categories> selectAllCategories() {
-		return categoriesService.selectAllCategories();
+	public List<CategoryModel> selectAllCategories() {
+		List<CategoryModel> CategoryModelList = categoriesService.getCategoryModelList();
+		return CategoryModelList;
 	}
 }
