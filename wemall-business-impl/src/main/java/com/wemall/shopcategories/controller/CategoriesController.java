@@ -23,4 +23,14 @@ public class CategoriesController {
 		List<CategoryModel> CategoryModelList = categoriesService.getCategoryModelList();
 		return CategoryModelList;
 	}
+	
+	@RequestMapping("/test")
+	public String getTest() {
+		return "redirect:/testb"; 
+	}
+	@ResponseBody
+	@RequestMapping("/testb")
+	public String getTest1() {
+		return "hahah"; 
+	}
 }

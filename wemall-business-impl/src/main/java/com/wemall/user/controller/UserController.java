@@ -1,5 +1,9 @@
 package com.wemall.user.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -15,7 +19,13 @@ import com.wemall.user.service.IUserService;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
 
+	@Autowired  
+    private HttpServletRequest request; 
+	
+	@Autowired  
+    private HttpServletResponse response;
 	@Autowired
 	private IUserService userService;
 	@ResponseBody
@@ -27,6 +37,9 @@ public class UserController {
 			subject.login(token);
 			Session session = subject.getSession();
 			System.out.println("sessionId:" + session.getId());
+			//解决跨域前端登录时没有将cookie写入的问题
+			Cookie cookie = new Cookie("JSESSIONID", (String)session.getId());
+			response.addCookie(cookie);
 			System.out.println("sessionHost:" + session.getHost());
 			System.out.println("sessionTimeout:" + session.getTimeout());
 			session.setAttribute("info", "session的数据");
@@ -41,6 +54,18 @@ public class UserController {
 	@RequestMapping("user")
 	public User test(Long id) {
 		return userService.selectByPrimaryKey(id);
+
+	}
+	@ResponseBody
+	@RequestMapping("nolog")
+	public String nolog() {
+		return "没有登录";
+
+	}
+	@ResponseBody
+	@RequestMapping("unauthorized")
+	public String unauthorized() {
+		return "没有权限";
 
 	}
 }

@@ -1,5 +1,8 @@
 package com.wemall.user.realm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -35,7 +38,10 @@ public class UserRealm extends AuthorizingRealm {
         }
         // 将权限名称提供给info
         authorizationInfo.setStringPermissions(permissionNames);
-*/
+        Role
+*/		Set<String> set = new HashSet<>();
+		set.add("user");
+        authorizationInfo.setRoles(set);
         return authorizationInfo;
     }
 
