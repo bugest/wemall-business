@@ -50,4 +50,7 @@ public interface UserDao {
      * @mbggenerated
      */
     int updateByPrimaryKey(User record);
+    
+    
+    User selectByAccount(String account);
 }

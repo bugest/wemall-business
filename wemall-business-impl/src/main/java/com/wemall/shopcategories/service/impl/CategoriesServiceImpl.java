@@ -72,4 +72,10 @@ public class CategoriesServiceImpl implements CategoriesService {
 		return categoryModelList;
 	}
 
+	@Override
+	public Categories selectByPrimaryKey(Integer id) {
+		// TODO Auto-generated method stub
+		return categoriesDao.selectByPrimaryKey(id);
+	}
+
 }

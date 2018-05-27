@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wemall.shopcategories.entity.Categories;
 import com.wemall.shopcategories.model.CategoryModel;
 import com.wemall.shopcategories.service.CategoriesService;
 
@@ -32,5 +34,11 @@ public class CategoriesController {
 	@RequestMapping("/testb")
 	public String getTest1() {
 		return "hahah"; 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selectByPrimaryKey/{id}") 
+	public Categories selectByPrimaryKey(@PathVariable Integer id) {
+		return categoriesService.selectByPrimaryKey(id);
 	}
 }

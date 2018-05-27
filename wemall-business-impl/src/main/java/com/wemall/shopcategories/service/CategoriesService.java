@@ -11,5 +11,7 @@ public interface CategoriesService {
 	List<Categories> selectAllCategories();
 	
 	List<CategoryModel> getCategoryModelList();
+	
+	Categories selectByPrimaryKey(Integer id);
 
 }

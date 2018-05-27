@@ -7,14 +7,23 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.wemall.permission.entity.Permission;
+import com.wemall.role.entity.Role;
+import com.wemall.user.entity.User;
+import com.wemall.user.service.IUserService;
+
+@Component(value="myRealm")
 public class UserRealm extends AuthorizingRealm {
-
-
+	@Autowired
+	private IUserService userService;
     /**
      * 提供用户信息返回权限信息
      */
@@ -22,26 +31,23 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-  /*      // 根据用户名查询当前用户拥有的角色
-        Set<Role> roles = userService.findRoles(username);
+        User user = userService.selectByAccount(username);
+        //userService.selectByPrimaryKey();
+        // 根据用户名查询当前用户拥有的角色
+        Set<Role> roles = user.getRoles();
         Set<String> roleNames = new HashSet<String>();
+        Set<String> permissionNames = new HashSet<String>();
         for (Role role : roles) {
-            roleNames.add(role.getRole());
+            roleNames.add(role.getRoleKey());
+            Set<Permission> permissions = role.getPermissions();
+            for (Permission permission : permissions) {
+            	permissionNames.add(permission.getPermissionKey()); 
+            }
         }
         // 将角色名称提供给info
         authorizationInfo.setRoles(roleNames);
         // 根据用户名查询当前用户权限
-        Set<Permission> permissions = userService.findPermissions(username);
-        Set<String> permissionNames = new HashSet<String>();
-        for (Permission permission : permissions) {
-            permissionNames.add(permission.getPermission());
-        }
-        // 将权限名称提供给info
         authorizationInfo.setStringPermissions(permissionNames);
-        Role
-*/		Set<String> set = new HashSet<>();
-		set.add("user");
-        authorizationInfo.setRoles(set);
         return authorizationInfo;
     }
 
@@ -51,17 +57,13 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-        /* User user = userService.findByUsername(username);
+        User user = userService.selectByAccount(username);
         if (user == null) {
             // 用户名不存在抛出异常
             throw new UnknownAccountException();
         }
-        if (user.getLocked() == 0) {
-            // 用户被管理员锁定抛出异常
-            throw new LockedAccountException();
-        }*/
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo("admin",
-                "admin", getName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUserAccount(),
+               user.getPassword(), getName());
         return authenticationInfo;
     }
 }
