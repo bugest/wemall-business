@@ -1,5 +1,7 @@
 package com.wemall.shriourl.dao;
 
+import java.util.List;
+
 import com.wemall.shriourl.entity.ShrioUrl;
 
 public interface ShrioUrlDao {
@@ -50,4 +52,6 @@ public interface ShrioUrlDao {
      * @mbggenerated
      */
     int updateByPrimaryKey(ShrioUrl record);
+    
+    List<ShrioUrl> selectAllShrioUrl();
 }
