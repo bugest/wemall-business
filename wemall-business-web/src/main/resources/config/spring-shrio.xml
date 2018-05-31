@@ -22,6 +22,9 @@
 				<entry key="rolesor">
 					<bean class="com.wemall.shrio.filterchaindef.CustomRolesAuthorizationFilter" />
 				</entry>
+				<entry key="all">
+					<bean class="com.wemall.shrio.filterchaindef.AllAuthorizationFilter" />
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -33,7 +36,6 @@
 				<!-- /index.jsp=anon /jsp/success.jsp=anon /jsp/fail.jsp=anon /jsp/admin.jsp 
 					= roles[admin] -->
 				/logout = logout
-				/user/user = perms[user:edit],roles["admin"]
 			</value>
 		</property>
 	</bean>
