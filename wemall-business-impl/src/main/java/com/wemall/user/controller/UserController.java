@@ -1,5 +1,8 @@
 package com.wemall.user.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wemall.redis.service.impl.RedisTemplateUtil;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
@@ -23,6 +27,9 @@ public class UserController {
 
 	@Autowired  
     private HttpServletRequest request; 
+	
+	@Autowired
+	private RedisTemplateUtil redisTemplateUtil;
 	
 	@Autowired  
     private HttpServletResponse response;
@@ -65,6 +72,17 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("unauthorized")
 	public String unauthorized() {
+		return "没有权限";
+
+	}
+	
+	@ResponseBody
+	@RequestMapping("test")
+	public String testredis() {
+		List<String> a = new ArrayList<String>();
+		a.add("1");
+		//redisTemplateUtil.setList("1", a);
+		redisTemplateUtil.get("1");
 		return "没有权限";
 
 	}

@@ -35,6 +35,7 @@
 			<value>
 				<!-- /index.jsp=anon /jsp/success.jsp=anon /jsp/fail.jsp=anon /jsp/admin.jsp 
 					= roles[admin] -->
+				<!-- 此处改为从数据库读取 -->
 				/logout = logout
 			</value>
 		</property>
