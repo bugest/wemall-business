@@ -7,6 +7,9 @@
         <dependent-module archiveName="wemall-business-impl-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wemall-business-impl/wemall-business-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="wemall-business-api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wemall-business-api/wemall-business-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="wemall-business-web"/>
         <property name="java-output-path" value="/wemall-business-web/target/classes"/>
     </wb-module>

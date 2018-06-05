@@ -25,14 +25,14 @@ import com.wemall.user.service.IUserService;
 public class UserController {
 	
 
-	@Autowired  
+	/*@Autowired  
     private HttpServletRequest request; 
-	
+	*/
 	@Autowired
 	private RedisTemplateUtil redisTemplateUtil;
 	
-	@Autowired  
-    private HttpServletResponse response;
+/*	@Autowired  
+    private HttpServletResponse response;*/
 	@Autowired
 	private IUserService userService;
 	@ResponseBody
@@ -46,7 +46,7 @@ public class UserController {
 			System.out.println("sessionId:" + session.getId());
 			//解决跨域前端登录时没有将cookie写入的问题
 			Cookie cookie = new Cookie("JSESSIONID", (String)session.getId());
-			response.addCookie(cookie);
+			//response.addCookie(cookie);
 			System.out.println("sessionHost:" + session.getHost());
 			System.out.println("sessionTimeout:" + session.getTimeout());
 			session.setAttribute("info", "session的数据");
@@ -81,9 +81,8 @@ public class UserController {
 	public String testredis() {
 		List<String> a = new ArrayList<String>();
 		a.add("1");
-		//redisTemplateUtil.setList("1", a);
 		redisTemplateUtil.get("1");
-		return "没有权限";
+		return (String) redisTemplateUtil.get("1");
 
 	}
 }

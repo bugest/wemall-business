@@ -12,12 +12,10 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserDao userDao;
-	@Override
 	public User selectByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
 		return userDao.selectByPrimaryKey(id);
 	}
-	@Override
 	public User selectByAccount(String account) {
 		return userDao.selectByAccount(account);
 	}
