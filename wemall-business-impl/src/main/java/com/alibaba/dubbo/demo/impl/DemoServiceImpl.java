@@ -1,18 +1,27 @@
 package com.alibaba.dubbo.demo.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.alibaba.dubbo.demo.DemoService;
+import com.wemall.user.dao.UserDao;
 
 
-public class DemoServiceImpl implements DemoService {
+public class DemoServiceImpl implements DemoService ,Serializable{
+
+	
+	@Autowired
+	private UserDao userDao;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public List<String> getPermissions(Long id) {
-        List<String> demo = new ArrayList<String>();
-        demo.add(String.format("Permission_%d", id - 1));
-        demo.add(String.format("Permission_%d", id));
-        demo.add(String.format("Permission_%d", id + 1));
-        return demo;
+		userDao.selectByAccount("");
+        return null;
     }
 }
