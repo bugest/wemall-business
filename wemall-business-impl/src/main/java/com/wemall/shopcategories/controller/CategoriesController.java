@@ -41,4 +41,18 @@ public class CategoriesController {
 	public Categories selectByPrimaryKey(@PathVariable Integer id) {
 		return categoriesService.selectByPrimaryKey(id);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/updateAllCategories")
+	public List<CategoryModel> updateAllCategories() {
+		List<CategoryModel> CategoryModelList = categoriesService.updateCategoryModelList();
+		return CategoryModelList;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/removeAllCategories")
+	public void removeAllCategories() {
+		categoriesService.removeCategoryModelList();
+	}
+
 }

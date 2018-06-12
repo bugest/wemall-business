@@ -13,5 +13,9 @@ public interface CategoriesService {
 	List<CategoryModel> getCategoryModelList();
 	
 	Categories selectByPrimaryKey(Integer id);
+	
+	public List<CategoryModel> updateCategoryModelList();
+	
+	public void removeCategoryModelList();
 
 }

@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wemall.shopcategories.dao.CategoriesDao;
 import com.wemall.shopcategories.entity.Categories;
@@ -16,7 +17,7 @@ import com.wemall.shopcategories.model.CategoryModel;
 import com.wemall.shopcategories.service.CategoriesService;
 
 @Service
-@CacheConfig(cacheNames = "sysUser")
+@CacheConfig(cacheNames = "categories")
 public class CategoriesServiceImpl implements CategoriesService {
 
 	@Autowired
@@ -83,7 +84,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 		categoryModelList.add(0, categoryModel);
 		return categoryModelList;
 	}
-
+	@Transactional
 	public Categories selectByPrimaryKey(Integer id) {
 		// TODO Auto-generated method stub
 		return categoriesDao.selectByPrimaryKey(id);
@@ -97,6 +98,12 @@ public class CategoriesServiceImpl implements CategoriesService {
 	/**
 	 * @return
 	 */
+	/* (非 Javadoc) 
+	* <p>Title: updateCategoryModelList</p> 
+	* <p>Description: </p> 
+	* @return 
+	* @see com.wemall.shopcategories.service.CategoriesService#updateCategoryModelList() 
+	*/
 	@CachePut(key = "'CategoryModelList'")
 	public List<CategoryModel> updateCategoryModelList() {
 		List<Categories> categoriesList = categoriesDao.selectAllCategories();

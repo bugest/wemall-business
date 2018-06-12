@@ -13,9 +13,11 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
@@ -84,5 +86,17 @@ public class UserController {
 		redisTemplateUtil.get("1");
 		return (String) redisTemplateUtil.get("1");
 
+	}
+	
+	@ResponseBody
+	@RequestMapping("test11")
+	public String login1(String username, String password) {
+		try {
+			return JwtToken.createToken();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -1,4 +1,4 @@
-package com.cn.util;
+package com.wemall.redis.config;
 
 import java.lang.reflect.Method;
 

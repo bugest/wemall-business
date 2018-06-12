@@ -53,7 +53,7 @@
     </bean>
 
     <!-- 配置RedisCacheConfig -->
-    <bean id="redisCacheConfig" class="com.cn.util.RedisCacheConfig">
+    <bean id="redisCacheConfig" class="com.wemall.redis.config.RedisCacheConfig">
         <constructor-arg ref="connectionFactory"/>
         <constructor-arg ref="redisTemplate"/>
         <constructor-arg ref="redisCacheManager"/>

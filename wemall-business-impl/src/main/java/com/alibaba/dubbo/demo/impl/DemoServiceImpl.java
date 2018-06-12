@@ -10,6 +10,12 @@ import com.alibaba.dubbo.demo.DemoService;
 import com.wemall.user.dao.UserDao;
 
 
+/** 
+* 
+*
+* @author linan
+* @date 2018年6月7日
+*/
 public class DemoServiceImpl implements DemoService ,Serializable{
 
 	

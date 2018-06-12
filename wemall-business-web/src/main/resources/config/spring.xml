@@ -23,6 +23,6 @@
 	<!-- 引入shrio -->
 	<import resource="spring-shrio.xml"/>
 	<import resource="spring-redis.xml"></import>
-	<import resource="provider.xml"/>
+	<!-- <import resource="provider.xml"/> -->
 </beans>  
  
