@@ -43,5 +43,4 @@ public class JwtToken {
 		}
 		return jwt.getClaims();
 	}
-	
 }

@@ -29,7 +29,8 @@ public class JwtFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-		String auth = httpRequest.getHeader("Authorization");
+		String auth = httpRequest.getHeader("JwtToken");
+		//String auth = httpRequest.getParameter("Authorization"); //getHeader("Authorization");
 		try {
 			JwtToken.verifyToken(auth);
 		} catch (Exception e) {
