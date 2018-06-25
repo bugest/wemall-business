@@ -21,8 +21,10 @@
 	<!-- 引入mybatis配置 -->
 	<import resource="spring-mybatis.xml"/>
 	<!-- 引入shrio -->
-	<import resource="spring-shrio.xml"/>
-	<import resource="spring-redis.xml"></import>
+	<!-- <import resource="spring-shrio.xml"/> -->
+	<import resource="spring-redis.xml"/>
 	<!-- <import resource="provider.xml"/> -->
+	<!-- mq的配置文件 -->
+	<import resource="activitymq.xml"/> 
 </beans>  
  

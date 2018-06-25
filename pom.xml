@@ -66,6 +66,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-mock</artifactId>
 			<version>2.0.8</version>
 		</dependency>
@@ -281,6 +287,21 @@
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-all -->
+		<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-all -->
+		<!-- <dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-all</artifactId> 
+			<version>5.12.1</version> <exclusions> <exclusion> <groupId>org.springframework</groupId> 
+			<artifactId>spring-core</artifactId> </exclusion> </exclusions> </dependency> -->
+		<dependency>
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+			<version>4.6</version>
 		</dependency>
 	</dependencies>
 
