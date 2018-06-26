@@ -17,7 +17,7 @@ public class JwtToken {
 	public static String createToken() throws Exception {
 		Date iatDate = new Date();
 		Calendar nowTime = Calendar.getInstance();
-		nowTime.add(Calendar.MINUTE, 1);
+		nowTime.add(Calendar.MINUTE, 30);
 		Date expiresDate = nowTime.getTime();
 		
 		Map<String ,Object> map = new HashMap<String, Object>();
