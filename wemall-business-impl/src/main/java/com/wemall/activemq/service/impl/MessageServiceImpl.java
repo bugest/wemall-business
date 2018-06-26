@@ -1,9 +1,11 @@
-package com.wemall.activemq.service;
+package com.wemall.activemq.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.stereotype.Service;
+
+import com.wemall.activemq.service.MessageService;
 
 @Service
 public class MessageServiceImpl implements MessageService {
