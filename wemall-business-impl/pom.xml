@@ -10,7 +10,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.wemall</groupId>
-			<artifactId>wemall-business-api</artifactId>
+			<artifactId>wemall-api-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
