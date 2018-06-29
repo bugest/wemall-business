@@ -12,12 +12,14 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.dubbo.demo.DemoService;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
+import com.wemall.shopcategories.model.CategoryModel;
+import com.wemall.shopcategories.service.CategoriesService;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
@@ -39,6 +41,13 @@ public class UserController {
     private HttpServletResponse response;*/
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private DemoService demoService;
+	
+	@Autowired
+	private CategoriesService categoriesService;
+	
 	@ResponseBody
 	@RequestMapping("login")
 	public boolean login(String username, String password) {
@@ -111,5 +120,11 @@ public class UserController {
 	@RequestMapping(value = "receive")
 	public Object receivemq(String destination) {
 		return messageService.receive(destination);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "testdubbo")
+	public List<CategoryModel> receivemq(Long id) {
+		return categoriesService.getCategoryModelList();
 	}
 }
