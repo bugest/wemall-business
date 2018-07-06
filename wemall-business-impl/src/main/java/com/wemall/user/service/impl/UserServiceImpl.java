@@ -21,5 +21,15 @@ public class UserServiceImpl implements IUserService {
 	public User selectByAccount(String account) {
 		return userDao.selectByAccount(account);
 	}
+	@Transactional
+	public int insert(User user) {
+		// TODO Auto-generated method stub
+		return userDao.insert(user);
+	}
+	public int updateByPrimaryKey(User user) {
+		return userDao.updateByPrimaryKey(user);
+	}
+	
+	
 
 }

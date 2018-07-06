@@ -14,12 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.dubbo.demo.DemoService;
+import com.alibaba.fastjson.JSON;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
 import com.wemall.shopcategories.model.CategoryModel;
-import com.wemall.shopcategories.service.CategoriesService;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
@@ -42,11 +41,11 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 	
-	@Autowired
+/*	@Autowired
 	private DemoService demoService;
 	
 	@Autowired
-	private CategoriesService categoriesService;
+	private CategoriesService categoriesService;*/
 	
 	@ResponseBody
 	@RequestMapping("login")
@@ -112,8 +111,8 @@ public class UserController {
 	}
 	
 	@RequestMapping("send")
-	public void sendmq(String destination, String msg) {
-		messageService.sendMessage(destination, msg);
+	public void sendmq(String destination, String msg) { 
+		messageService.sendMessage(destination, JSON.toJSON(userService.selectByPrimaryKey(new Long(2))));
 	}
 	
 	@ResponseBody
@@ -125,6 +124,25 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "testdubbo")
 	public List<CategoryModel> receivemq(Long id) {
-		return categoriesService.getCategoryModelList();
+		//return categoriesService.getCategoryModelList();
+		return null;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "testinsert")
+	public User testinsert(User user) {
+		userService.insert(user);
+		return user;
+		//return categoriesService.getCategoryModelList();
+		//return null;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "testedit")
+	public User testEdit(User user) {
+		userService.updateByPrimaryKey(user);
+		return user;
+		//return categoriesService.getCategoryModelList();
+		//return null;
 	}
 }

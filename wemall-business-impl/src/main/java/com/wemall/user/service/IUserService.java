@@ -6,4 +6,8 @@ public interface IUserService {
 	User selectByPrimaryKey(Long id);
 
 	User selectByAccount(String account);
+	
+	int insert(User user); 
+	
+	int updateByPrimaryKey(User user);
 }
