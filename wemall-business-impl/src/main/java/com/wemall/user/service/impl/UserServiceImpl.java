@@ -27,7 +27,8 @@ public class UserServiceImpl implements IUserService {
 		return userDao.insert(user);
 	}
 	public int updateByPrimaryKey(User user) {
-		return userDao.updateByPrimaryKey(user);
+		int a = userDao.updateByPrimaryKey(user);
+		return a;
 	}
 	
 	

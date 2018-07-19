@@ -56,7 +56,7 @@
 
 	<!-- 定义Queue监听器 -->
 	<!-- transaction-manager="jmsTransactionManager" --> 
-	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="client"  connection-factory="mqconnectionFactory">
+	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="transacted"  connection-factory="mqconnectionFactory">
 		<jms:listener destination="test" ref="myMessageHandler" />
 		<!-- <jms:listener destination="test.queue" ref="queueReceiver2"/> -->
 	</jms:listener-container>

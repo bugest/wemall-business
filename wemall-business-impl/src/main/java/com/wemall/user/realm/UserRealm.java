@@ -1,6 +1,7 @@
 package com.wemall.user.realm;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -34,7 +35,7 @@ public class UserRealm extends AuthorizingRealm {
         User user = userService.selectByAccount(username);
         //userService.selectByPrimaryKey();
         // 根据用户名查询当前用户拥有的角色
-        Set<Role> roles = user.getRoles();
+        List<Role> roles = user.getRoles();
         Set<String> roleNames = new HashSet<String>();
         Set<String> permissionNames = new HashSet<String>();
         for (Role role : roles) {
