@@ -9,6 +9,7 @@
     <!-- <dubbo:registry address="zookeeper://localhost:2181"/> -->
     <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183"/>
     <!--使用 dubbo 协议调用定义好的 api.PermissionService 接口-->
-    <dubbo:reference id="permissionService" interface="com.alibaba.dubbo.demo.DemoService"/>
-    <dubbo:reference id="categoriesService" interface="com.wemall.shopcategories.service.CategoriesService"/>
+    <dubbo:reference id="permissionService"  interface="com.alibaba.dubbo.demo.DemoService"/>
+    <!-- retries="0" dubbo有重试机制 -->
+    <dubbo:reference id="categoriesService" retries="3" interface="com.wemall.shopcategories.service.CategoriesService" check="false" mock="true"/>
 </beans>

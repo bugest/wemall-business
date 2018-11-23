@@ -22,9 +22,14 @@ public class MyMessageListener implements MessageListener{
 	
 	@Transactional
 	public void onMessage(Message message) {
-		try {
-			Map<String, Object> map = ((ActiveMQMapMessage) message).getContentMap();
-			User user = new User();
+		//try {
+			try {
+				Map<String, Object> map = ((ActiveMQMapMessage) message).getContentMap();
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+/*			User user = new User();
 			try {
 				BeanUtils.populate(user, map);
 			} catch (IllegalAccessException e) {
@@ -50,7 +55,7 @@ public class MyMessageListener implements MessageListener{
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		/*throw new RuntimeException();*/
 	}
 }

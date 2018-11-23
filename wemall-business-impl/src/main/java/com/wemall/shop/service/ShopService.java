@@ -8,4 +8,8 @@ public interface ShopService {
 	Shop selectByPrimaryKey(String pkShop);
 	
 	List<Shop> selectAllShop();
+	
+	int insert(Shop shop);
+	
+	int updateByPrimaryKeySelective(Shop shop);
 }

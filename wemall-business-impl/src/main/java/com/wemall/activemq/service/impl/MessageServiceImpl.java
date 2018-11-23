@@ -44,7 +44,8 @@ public class MessageServiceImpl implements MessageService {
 		User user = userService.selectByPrimaryKey(new Long(2));
 		user.setId(null);
 		user.setUserAccount("hello101");
-		int i = userService.insert(user);
+		/*int i = userService.insert(user);*/
+		i = 1;
 		if (i > 0) {
 			jmsOperations.convertAndSend(destination, msg);
 		}

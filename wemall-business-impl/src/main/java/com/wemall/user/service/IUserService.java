@@ -1,5 +1,7 @@
 package com.wemall.user.service;
 
+import java.util.List;
+
 import com.wemall.user.entity.User;
 
 public interface IUserService {
@@ -10,4 +12,6 @@ public interface IUserService {
 	int insert(User user); 
 	
 	int updateByPrimaryKey(User user);
+	
+	List<User> selectUserByJoin();
 }

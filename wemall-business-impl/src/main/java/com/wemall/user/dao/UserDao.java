@@ -1,5 +1,7 @@
 package com.wemall.user.dao;
 
+import java.util.List;
+
 import com.wemall.user.entity.User;
 
 public interface UserDao {
@@ -53,4 +55,6 @@ public interface UserDao {
     
     
     User selectByAccount(String account);
+    
+    List<User> selectUserByJoin();
 }

@@ -19,6 +19,7 @@ import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
 import com.wemall.shopcategories.model.CategoryModel;
+import com.wemall.shopcategories.service.CategoriesService;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
@@ -43,9 +44,9 @@ public class UserController {
 	
 /*	@Autowired
 	private DemoService demoService;
-	
+*/	
 	@Autowired
-	private CategoriesService categoriesService;*/
+	private CategoriesService categoriesService;
 	
 	@ResponseBody
 	@RequestMapping("login")
@@ -124,8 +125,14 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "testdubbo")
 	public List<CategoryModel> receivemq(Long id) {
-		//return categoriesService.getCategoryModelList();
-		return null;
+		try {
+			return categoriesService.getCategoryModelList();
+		} catch (Exception e) {
+			System.out.println("捕获到异常");
+			return null;
+		}
+		
+		//return null;
 	}
 	
 	@ResponseBody
@@ -145,4 +152,23 @@ public class UserController {
 		//return categoriesService.getCategoryModelList();
 		//return null;
 	}
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("testdoubletran")
+	public List<CategoryModel> testdoubletran(User user) {
+		//userService.insert(user);
+		//return user;
+		return categoriesService.getCategoryModelList();
+	}
+	
+	@ResponseBody
+	@RequestMapping("selectUserByJoin")
+	public List<User> selectUserByJoin() {
+		return userService.selectUserByJoin();
+	}
+	
+	
 }
