@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wemall.shop.entity.Shop;
 import com.wemall.user.service.IUserService;
 
-public class MyMessageListener implements MessageListener{
+public class MyMessageListener1 implements MessageListener{
 	 
 	@Autowired
 	private IUserService userService;
@@ -28,9 +28,9 @@ public class MyMessageListener implements MessageListener{
 				SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); 
 				String date=sDateFormat.format(new Date(message.getJMSTimestamp()));
 				//Map<String, Object> map = ((ActiveMQMapMessage) message).getContentMap();
-				//Serializable map1 = ((ActiveMQObjectMessage) message).getObject();
-				//List<Shop> shop = (List<Shop>) map1;
-				//System.out.println(shop.get(0).getName());
+				Serializable map1 = ((ActiveMQObjectMessage) message).getObject();
+				List<Shop> shop = (List<Shop>) map1;
+				System.out.println(shop.get(0).getName());
 			} catch (JMSException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

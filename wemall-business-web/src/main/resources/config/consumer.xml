@@ -11,5 +11,7 @@
     <!--使用 dubbo 协议调用定义好的 api.PermissionService 接口-->
     <dubbo:reference id="permissionService"  interface="com.alibaba.dubbo.demo.DemoService"/>
     <!-- retries="0" dubbo有重试机制 -->
-    <dubbo:reference id="categoriesService" retries="3" interface="com.wemall.shopcategories.service.CategoriesService" check="false" mock="true"/>
+    <!-- url="dubbo://127.0.0.1:20880" 直连-->
+    <!-- mock="com.wemall.shopcategories.service.CategoriesServiceMock2"  -->
+    <dubbo:reference id="categoriesService" url="dubbo://192.168.52.1:20880"  version="4.0.0" retries="3" interface="com.wemall.shopcategories.service.CategoriesService" check="false"  />
 </beans>

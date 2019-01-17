@@ -1,6 +1,7 @@
 package com.wemall.user.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wemall.user.entity.User;
 
@@ -57,4 +58,6 @@ public interface UserDao {
     User selectByAccount(String account);
     
     List<User> selectUserByJoin();
+    
+    List<User> selecttest(Map map);
 }

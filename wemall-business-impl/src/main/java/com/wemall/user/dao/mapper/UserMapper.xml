@@ -109,6 +109,29 @@
 	</resultMap>
 
 
+	<select id="selecttest" parameterType="java.util.Map" resultMap="BaseResultMap"> 
+		select 
+		<include refid="Base_Column_List"></include>
+		from sys_user
+		<where>
+			<if test="userAccount != null and userAccount != ''">
+				user_Account like "%"#{userAccount}"%"
+			</if>
+			<if test="userName != null and userName != ''">
+				and user_Name like concat('%', #{userName},'%')
+			</if>
+			<if test="testlist != null and testlist.size > 0">
+				and id in
+				<foreach collection="testlist" index="index" item ="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>	
+			</if>
+
+			and password = #{user.password}	
+		</where>
+	
+	</select>
+
 	<select id="selectUserByJoin" resultMap="UserByJoinResultMap">
 		SELECT
 		u.id,
@@ -292,4 +315,6 @@
 		salt = #{salt,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=BIGINT}
 	</update>
+	
+
 </mapper>

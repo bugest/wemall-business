@@ -15,11 +15,15 @@
 	<!-- ActiveMQ 连接工厂 -->
 	<!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
 	<!-- 如果连接网络：tcp://ip:61616；未连接网络：tcp://localhost:61616 以及用户名，密码 -->
-	<amq:connectionFactory id="amqConnectionFactory"
-		brokerURL="failover:(tcp://127.0.0.1:61616,tcp://127.0.0.1:61617,tcp://127.0.0.1:61618)?randomize=false" userName="admin" password="admin"/>
-
+	<amq:connectionFactory id="amqConnectionFactory" 
+		brokerURL="failover:(tcp://127.0.0.1:61616,tcp://127.0.0.1:61617,tcp://127.0.0.1:61618)?randomize=false" userName="admin" password="admin" exclusiveConsumer="false">
+		<property name="prefetchPolicy" ref="prefetchPolicy"></property>
+		</amq:connectionFactory>
 	<!-- Spring Caching连接工厂 -->
 	<!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+	<bean id="prefetchPolicy" class="org.apache.activemq.ActiveMQPrefetchPolicy">
+    <property name="queuePrefetch" value="1" />
+  </bean>  
 	<bean id="mqconnectionFactory"
 		class="org.springframework.jms.connection.CachingConnectionFactory">
 		<!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
@@ -28,6 +32,7 @@
 		<!-- <constructor-arg ref="amqConnectionFactory" /> -->
 		<!-- Session缓存数量 -->
 		<property name="sessionCacheSize" value="100" />
+		<!-- <property name="prefetchPolicy" ref="prefetchPolicy" />   -->
 	</bean>
 
 	<!-- Spring JmsTemplate 的消息生产者 start -->
@@ -51,13 +56,17 @@
 	<!--Spring JmsTemplate 的消息生产者 end -->
 
 	<bean id="myMessageHandler" class="com.wemall.activemq.service.impl.MyMessageListener" />
+	<bean id="myMessageHandler1" class="com.wemall.activemq.service.impl.MyMessageListener1" />
+	<bean id="myMessageHandler2" class="com.wemall.activemq.service.impl.MyMessageListener2" />
 
 	<!-- 消息消费者 start -->
 
 	<!-- 定义Queue监听器 -->
 	<!-- transaction-manager="jmsTransactionManager" --> 
-	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="transacted"  connection-factory="mqconnectionFactory">
+	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="client" connection-factory="mqconnectionFactory">
 		<jms:listener destination="test" ref="myMessageHandler" />
+		<jms:listener destination="test" ref="myMessageHandler1" />
+		<jms:listener destination="test" ref="myMessageHandler2" />
 		<!-- <jms:listener destination="test.queue" ref="queueReceiver2"/> -->
 	</jms:listener-container>
 		<!-- 定义Queue监听器 -->

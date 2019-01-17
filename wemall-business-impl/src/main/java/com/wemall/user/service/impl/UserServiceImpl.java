@@ -2,6 +2,7 @@ package com.wemall.user.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements IUserService {
 		int c = shopService.updateByPrimaryKeySelective(shop);
 		usera.setUserBirthday(new Date().toLocaleString());
 		userDao.updateByPrimaryKeySelective(usera);		
-		//return 1;
+		return 1;
 		//return c;
 		//throw new RuntimeException();
 	}
@@ -55,5 +56,9 @@ public class UserServiceImpl implements IUserService {
 	
 	public List<User> selectUserByJoin() {
 		return userDao.selectUserByJoin();
+	}
+	public List<User> selecttest(Map map) {
+		// TODO Auto-generated method stub
+		return userDao.selecttest(map);
 	}
 }

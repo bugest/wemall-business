@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;  
 import java.util.Map;  
-import java.util.Set;  
+import java.util.Set;
+import java.util.concurrent.TimeUnit;  
   
 /** 
  * Created by tl on 17/2/16. 
@@ -20,6 +21,10 @@ public class RedisTemplateUtil {
         this.redisTemplate = redisTemplate;  
     }  
   
+    public void set(String key, Object value, long timeout) {
+        ValueOperations valueOperations = redisTemplate.opsForValue();  
+        valueOperations.set(key, value, timeout, TimeUnit.SECONDS);;  	
+    }
   
     public void set(String key, Object value) {  
         ValueOperations valueOperations = redisTemplate.opsForValue();  

@@ -1,10 +1,8 @@
 package com.wemall.activemq.service.impl;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jms.core.JmsOperations;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +14,7 @@ import com.wemall.user.service.IUserService;
 public class MessageServiceImpl implements MessageService {
 	@Autowired
 	@Qualifier("jmsQueueTemplate")
-	private JmsOperations jmsOperations;
+	private JmsTemplate jmsOperations;
 	
 	@Autowired
 	private IUserService userService;
@@ -30,7 +28,7 @@ public class MessageServiceImpl implements MessageService {
 	* @see com.wemall.activemq.service.MessageService#sendMessage(java.lang.String) 
 	*/
 	@Transactional
-	public void sendMessage(String destination ,Object msg) {
+	public void sendMessage(String destination ,Object msg, int priority) {
 		/*
 		 * jmsOperations.send("biz1.queue", new MessageCreator() { public Message
 		 * createMessage(Session session) throws JMSException { return
@@ -47,6 +45,7 @@ public class MessageServiceImpl implements MessageService {
 		/*int i = userService.insert(user);*/
 		i = 1;
 		if (i > 0) {
+			jmsOperations.setPriority(priority);
 			jmsOperations.convertAndSend(destination, msg);
 		}
 		//throw new RuntimeException();

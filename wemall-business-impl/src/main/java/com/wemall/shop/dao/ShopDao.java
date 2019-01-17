@@ -54,4 +54,5 @@ public interface ShopDao {
     int updateByPrimaryKey(Shop record);
     
     List<Shop> selectAllShop(); 
+    
 }
