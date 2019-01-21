@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,5 +27,27 @@ public class ShopController {
 	@ResponseBody
 	public List<Shop> selectAllShop() {
 		return shopService.selectAllShop();
+	}
+	
+	@RequestMapping("insert")
+	public int insertShop(Shop shop) {
+		return shopService.insert(shop);
+	}
+	
+	@RequestMapping("update")
+	public int updateByPrimaryKeySelective(Shop shop) {
+		int resutl = shopService.updateByPrimaryKeySelective(shop);
+		return resutl;
+	}
+	
+	@RequestMapping("updateByName")
+	public int updateByName(@RequestBody List<String> list) {
+		int resutl = shopService.updateByName(list);
+		return resutl;
+	}
+	@RequestMapping("delete")
+	public int deleteByPrimaryKey(String pkShop) {
+		int resutl = shopService.deleteByPrimaryKey(pkShop);
+		return resutl;
 	}
 }

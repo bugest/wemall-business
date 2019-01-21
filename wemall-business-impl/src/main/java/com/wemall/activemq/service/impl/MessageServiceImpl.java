@@ -1,8 +1,14 @@
 package com.wemall.activemq.service.impl;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +52,16 @@ public class MessageServiceImpl implements MessageService {
 		i = 1;
 		if (i > 0) {
 			jmsOperations.setPriority(priority);
-			jmsOperations.convertAndSend(destination, msg);
+			//jmsOperations.convertAndSend(destination, msg);
+			//jmsOperations.getpr
+			jmsOperations.send(destination, new MessageCreator() {
+
+				public Message createMessage(Session session) throws JMSException {
+                    //创建一个消息对象并返回
+                    TextMessage textMessage = session.createTextMessage("lolo");
+                    textMessage.setStringProperty("JMSXGroupID", "GroupA");
+                    return textMessage;
+				}});
 		}
 		//throw new RuntimeException();
 	}

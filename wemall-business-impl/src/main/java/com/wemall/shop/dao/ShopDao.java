@@ -55,4 +55,6 @@ public interface ShopDao {
     
     List<Shop> selectAllShop(); 
     
+    int updateByName(List<String> list);
+    
 }

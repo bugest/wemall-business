@@ -12,4 +12,8 @@ public interface ShopService {
 	int insert(Shop shop);
 	
 	int updateByPrimaryKeySelective(Shop shop);
+	
+	int updateByName(List<String> list);
+	
+	int deleteByPrimaryKey(String pkShop);
 }

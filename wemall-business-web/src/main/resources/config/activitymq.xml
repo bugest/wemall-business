@@ -64,19 +64,10 @@
 	<!-- 定义Queue监听器 -->
 	<!-- transaction-manager="jmsTransactionManager" --> 
 	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="client" connection-factory="mqconnectionFactory">
-		<jms:listener destination="test" ref="myMessageHandler" />
-		<jms:listener destination="test" ref="myMessageHandler1" />
+		<jms:listener  destination="test" ref="myMessageHandler" />
+ 		<jms:listener destination="test" ref="myMessageHandler1" />
 		<jms:listener destination="test" ref="myMessageHandler2" />
-		<!-- <jms:listener destination="test.queue" ref="queueReceiver2"/> -->
 	</jms:listener-container>
-		<!-- 定义Queue监听器 -->
-<!-- 	<jms:listener-container destination-type="queue"
-		container-type="default" connection-factory="mqconnectionFactory"
-		acknowledge="auto">
-		<jms:listener destination="test" ref="myMessageHandler" />
-		<jms:listener destination="test.queue" ref="queueReceiver2"/>
-	</jms:listener-container> -->
-
 	<!-- 定义Topic监听器 -->
 	<!-- <jms:listener-container destination-type="topic" container-type="default" 
 		connection-factory="connectionFactory" acknowledge="auto"> <jms:listener 

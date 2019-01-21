@@ -35,6 +35,8 @@ public class MyMessageListener implements MessageListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			throw new RuntimeException(); 
+			
 			//throw new RuntimeException(); 
 /*			User user = new User();
 			try {

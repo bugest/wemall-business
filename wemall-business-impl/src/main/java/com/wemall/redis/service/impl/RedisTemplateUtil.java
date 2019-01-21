@@ -66,5 +66,10 @@ public class RedisTemplateUtil {
   
     public void delete(String key) {  
         redisTemplate.delete(key);  
+    }
+    
+    public Boolean setIfAbsent(String key, Object value) {  
+        ValueOperations opsForValue = redisTemplate.opsForValue();  
+        return opsForValue.setIfAbsent(key, value);  
     }  
 }

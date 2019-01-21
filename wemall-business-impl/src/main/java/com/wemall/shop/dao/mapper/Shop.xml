@@ -207,4 +207,10 @@
 		where
 		pk_shop = #{pkShop,jdbcType=VARCHAR}
 	</update>
+	<update id="updateByName" parameterType="java.util.List">
+		update shop set name = 'hello' where name in
+				<foreach collection="list" index="index" item="name" open="(" close=")" separator=",">
+					#{name}
+				</foreach>
+	</update>
 </mapper>
