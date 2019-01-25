@@ -16,4 +16,6 @@ public interface ShopService {
 	int updateByName(List<String> list);
 	
 	int deleteByPrimaryKey(String pkShop);
+	
+	Shop selecttestwithasoci(String pk_shop);
 }

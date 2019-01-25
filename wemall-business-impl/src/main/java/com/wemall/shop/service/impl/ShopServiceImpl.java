@@ -50,4 +50,9 @@ public class ShopServiceImpl implements ShopService {
 		int result = shopDao.deleteByPrimaryKey(pkShop);
 		return result;
 	}
+	
+	public Shop selecttestwithasoci(String pk_shop) {
+		Shop selecttestwithasoci = shopDao.selecttestwithasoci(pk_shop);
+		return selecttestwithasoci;
+	}
 }

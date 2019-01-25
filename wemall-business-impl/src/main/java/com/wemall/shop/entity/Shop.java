@@ -3,6 +3,7 @@ package com.wemall.shop.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wemall.shopcategories.entity.Categories;
 
 public class Shop implements Serializable {
@@ -44,6 +45,7 @@ public class Shop implements Serializable {
      *
      * @mbggenerated
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date creationTime;
 
     /**
@@ -60,6 +62,9 @@ public class Shop implements Serializable {
      *
      * @mbggenerated
      */
+   
+
+
     private Date ts;
 
     /**
@@ -190,6 +195,7 @@ public class Shop implements Serializable {
      *
      * @mbggenerated
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     public Date getCreationTime() {
         return creationTime;
     }
@@ -239,6 +245,7 @@ public class Shop implements Serializable {
      * @mbggenerated
      */
     public Date getTs() {
+   
         return ts;
     }
 

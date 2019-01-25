@@ -36,6 +36,7 @@
 	</filter-mapping>
 
 
+
 	<!-- <filter> <filter-name>MyFilter</filter-name> <filter-class>com.test.MyFilter</filter-class> 
 		</filter> <filter-mapping> <filter-name>MyFilter</filter-name> <url-pattern>/*</url-pattern> 
 		</filter-mapping> -->
@@ -66,6 +67,23 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping> -->
 
+	<filter>
+		<filter-name>test1</filter-name>
+		<filter-class>com.TestFilter1</filter-class>
+		</filter>
+	<filter-mapping>
+		<filter-name>test1</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+		<filter>
+		<filter-name>test2</filter-name>
+		<filter-class>com.TestFilter2</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>test2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

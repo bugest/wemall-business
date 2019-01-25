@@ -213,4 +213,24 @@
 					#{name}
 				</foreach>
 	</update>
+	
+	<resultMap type="com.wemall.shopcategories.entity.Categories" id="resultCate">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+	</resultMap>
+	
+	<resultMap type="com.wemall.shop.entity.Shop" id="resultshop">
+		<id column="pk_shop" property="pkShop"/>
+		<result column="name" property="name"/>
+		<result column="ts" property="ts"/>
+		<result column="creation_time" property="creationTime"/>
+		<association property="category" column="pk_category" select="selectcate"></association>
+	</resultMap>
+	<select id="selectcate" resultMap="resultCate">
+		select id,name from shop_categories where id = #{id}
+	</select>
+	
+	<select id="selecttestwithasoci" parameterType="java.lang.String" resultMap="resultshop">
+		select pk_shop,name,ts,pk_category,creation_time from shop where pk_shop = #{pk_shop}
+	</select>
 </mapper>

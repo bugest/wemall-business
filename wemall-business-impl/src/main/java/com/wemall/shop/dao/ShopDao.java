@@ -57,4 +57,6 @@ public interface ShopDao {
     
     int updateByName(List<String> list);
     
+    Shop selecttestwithasoci(String pk_shop);
+    
 }

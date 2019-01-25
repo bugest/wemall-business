@@ -3,8 +3,11 @@ package com.wemall.user.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.dubbo.rpc.RpcContext;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
@@ -119,10 +121,12 @@ public class UserController {
 	}
 	
 	@RequestMapping("send")
-	public void sendmq(String destination, String msg, int priority) { 
+	@ResponseBody
+	public String sendmq(String destination, String msg, int priority) { 
 		Shop selectByPrimaryKey = shopService.selectByPrimaryKey("1");
 		//messageService.sendMessage(destination, JSON.toJSONString( selectByPrimaryKey));
 		messageService.sendMessage(destination, msg, priority);
+		return "0k";
 	}
 	
 	@ResponseBody
@@ -193,6 +197,21 @@ public class UserController {
 	@RequestMapping("selecttest")
 	public List<User> selecttest(@RequestBody Map map) {
 		return userService.selecttest(map);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("login2")
+	public String login2(HttpServletRequest request, HttpServletResponse response)  {
+		String redissessionid = UUID.randomUUID().toString();
+		User user = new User();
+		user.setId(new Long(2));
+		user.setUserName("linan");
+		redisTemplateUtil.set(redissessionid, user);
+		request.getSession().setAttribute("user", user);
+		Cookie cookie = new Cookie("redissessionid", redissessionid);
+		response.addCookie(cookie);
+		return "";
 	}
 	
 	

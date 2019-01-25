@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wemall.shop.entity.Shop;
+import com.wemall.shop.entity.TestFormat;
 import com.wemall.shop.service.ShopService;
 
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
+	
+	@Autowired
+	private Shop shop;
 	@Autowired
 	private ShopService shopService;
 
@@ -49,5 +54,18 @@ public class ShopController {
 	public int deleteByPrimaryKey(String pkShop) {
 		int resutl = shopService.deleteByPrimaryKey(pkShop);
 		return resutl;
+	}
+	@RequestMapping("selecttestwithasoci")
+	@ResponseBody
+	public Shop selecttestwithasoci(String pk_shop) {
+		Shop selecttestwithasoci = shopService.selecttestwithasoci(pk_shop);
+		return selecttestwithasoci;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("test")
+	public TestFormat test() {
+		return new TestFormat();
 	}
 }
