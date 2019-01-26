@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -207,8 +208,10 @@ public class UserController {
 		User user = new User();
 		user.setId(new Long(2));
 		user.setUserName("linan");
-		redisTemplateUtil.set(redissessionid, user);
-		request.getSession().setAttribute("user", user);
+		redisTemplateUtil.set(redissessionid, user, 60);
+		HttpSession session = request.getSession();
+		session.setAttribute("user", user);
+		session.setMaxInactiveInterval(60);
 		Cookie cookie = new Cookie("redissessionid", redissessionid);
 		response.addCookie(cookie);
 		return "";

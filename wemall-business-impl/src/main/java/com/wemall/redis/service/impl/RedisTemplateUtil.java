@@ -72,4 +72,12 @@ public class RedisTemplateUtil {
         ValueOperations opsForValue = redisTemplate.opsForValue();  
         return opsForValue.setIfAbsent(key, value);  
     }  
+    
+    public void setWithTimeOut(String key, Object value, Long timeout, TimeUnit unit) {  
+        redisTemplate.opsForValue().set(key, value, timeout, unit);  
+    }  
+    
+    public void setExpire(String key, Long timeout, TimeUnit unit) {  
+        redisTemplate.expire(key, timeout, unit); 
+    } 
 }

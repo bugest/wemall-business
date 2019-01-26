@@ -1,6 +1,7 @@
 package com;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,6 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -42,8 +44,21 @@ public class TestFilter1 implements Filter {
 		if(url.endsWith("login2")) {
 			chain.doFilter(httpRequest, response);
 		} else {
-
 			if (httpRequest.getSession().getAttribute("user") != null) {
+				//重新设置超期时间
+				HttpSession session = httpRequest.getSession();
+				session.setMaxInactiveInterval(60);
+				Cookie[] cookies = httpRequest.getCookies();
+				for (Cookie cookie : cookies) {
+					if ("redissessionid".equals(cookie.getName())) {
+						String value = cookie.getValue();
+						User user = (User)redisTemplateUtil.get(value);
+						if (user != null) {
+							redisTemplateUtil.setExpire(value, new Long(60), TimeUnit.SECONDS);
+							break;
+						}	
+					}
+				}
 				chain.doFilter(httpRequest, response);
 			} else {
 				Cookie[] cookies = httpRequest.getCookies();
@@ -54,7 +69,10 @@ public class TestFilter1 implements Filter {
 							String value = cookie.getValue();
 							User user = (User)redisTemplateUtil.get(value);
 							if (user != null) {
-								httpRequest.getSession().setAttribute("user", user);
+								HttpSession session = httpRequest.getSession();
+								session.setAttribute("user", user);
+								session.setMaxInactiveInterval(60);
+								redisTemplateUtil.set(value, user);
 								getsession = true; 
 								break;
 							}	
