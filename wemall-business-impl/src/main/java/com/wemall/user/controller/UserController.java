@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.LoginConfig;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
@@ -208,10 +209,10 @@ public class UserController {
 		User user = new User();
 		user.setId(new Long(2));
 		user.setUserName("linan");
-		redisTemplateUtil.set(redissessionid, user, 60);
+		redisTemplateUtil.set(redissessionid, user, LoginConfig.SESSIONTIMEOUT);
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
-		session.setMaxInactiveInterval(60);
+		session.setMaxInactiveInterval(LoginConfig.SESSIONTIMEOUT);
 		Cookie cookie = new Cookie("redissessionid", redissessionid);
 		response.addCookie(cookie);
 		return "";

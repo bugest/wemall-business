@@ -47,14 +47,14 @@ public class TestFilter1 implements Filter {
 			if (httpRequest.getSession().getAttribute("user") != null) {
 				//重新设置超期时间
 				HttpSession session = httpRequest.getSession();
-				session.setMaxInactiveInterval(60);
+				session.setMaxInactiveInterval(LoginConfig.SESSIONTIMEOUT);
 				Cookie[] cookies = httpRequest.getCookies();
 				for (Cookie cookie : cookies) {
 					if ("redissessionid".equals(cookie.getName())) {
 						String value = cookie.getValue();
 						User user = (User)redisTemplateUtil.get(value);
 						if (user != null) {
-							redisTemplateUtil.setExpire(value, new Long(60), TimeUnit.SECONDS);
+							redisTemplateUtil.setExpire(value, new Long(LoginConfig.SESSIONTIMEOUT), TimeUnit.SECONDS);
 							break;
 						}	
 					}
@@ -71,7 +71,7 @@ public class TestFilter1 implements Filter {
 							if (user != null) {
 								HttpSession session = httpRequest.getSession();
 								session.setAttribute("user", user);
-								session.setMaxInactiveInterval(60);
+								session.setMaxInactiveInterval(LoginConfig.SESSIONTIMEOUT);
 								redisTemplateUtil.set(value, user);
 								getsession = true; 
 								break;
