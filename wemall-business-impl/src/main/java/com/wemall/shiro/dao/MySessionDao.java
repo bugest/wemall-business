@@ -59,7 +59,8 @@ public class MySessionDao extends AbstractSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        return (Session) redisTemplateUtil.boundHashOps(myKey).get(sessionId.toString());
+        Session session = (Session) redisTemplateUtil.boundHashOps(myKey).get(sessionId.toString());
+        return session;
     }
 
 
