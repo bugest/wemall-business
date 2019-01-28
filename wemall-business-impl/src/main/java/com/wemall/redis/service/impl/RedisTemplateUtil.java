@@ -59,6 +59,10 @@ public class RedisTemplateUtil {
         hashOperations.putAll(key, value);  
     }  
   
+    public void deleteHash(String key) {  
+        redisTemplate.delete(key);
+    }
+    
     public Object getHash(String key) {  
         return redisTemplate.opsForHash().entries(key);  
     }  
@@ -80,4 +84,8 @@ public class RedisTemplateUtil {
     public void setExpire(String key, Long timeout, TimeUnit unit) {  
         redisTemplate.expire(key, timeout, unit); 
     } 
+    
+    public <HK, HV> BoundHashOperations<String, HK, HV> boundHashOps(String key) {
+		return redisTemplate.boundHashOps(key);
+	}
 }

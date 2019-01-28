@@ -20,7 +20,7 @@
 	<!-- 引入mybatis配置 -->
 	<import resource="spring-mybatis.xml"/>
 	<!-- 引入shrio -->
-	<!-- <import resource="spring-shrio.xml"/> -->
+	<import resource="spring-shrio.xml"/>
 	<import resource="spring-redis.xml"/>
 	<!-- <import resource="provider.xml"/>  -->
 	<import resource="consumer.xml"/>

@@ -52,9 +52,32 @@
 	<!-- 配置 Shiro 的 SecurityManager Bean. -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm" />
-		<property name="sessionMode" value="native">
-		</property>
+		<property name="sessionManager" ref="sessionManager"></property>
 	</bean>
 	<!-- 配置 Bean 后置处理器: 会自动的调用和 Spring 整合后各个组件的生命周期方法. -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	
+	<!-- Session ID 生成器 -->
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"></bean>
+    <!-- SessionDao实现类 -->
+    <bean id="sessionDAO" class="com.wemall.shiro.dao.MySessionDao">
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"></property>
+    </bean>
+	   <!-- session管理 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="1800000"></property>
+        <property name="deleteInvalidSessions" value="true"></property>
+        <property name="sessionDAO" ref="sessionDAO"></property>
+        <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+        <property name="sessionIdCookie" ref="sharesession" />
+    </bean>
+    
+    <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+    <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!-- cookie的name,对应的默认是 JSESSIONID -->
+        <constructor-arg name="name" value="SHAREJSESSIONID" />
+        <!-- jsessionId的path为 / 用于多个系统共享jsessionId -->
+        <property name="path" value="/" />
+        <property name="httpOnly" value="true"/>
+    </bean>
 </beans>  
