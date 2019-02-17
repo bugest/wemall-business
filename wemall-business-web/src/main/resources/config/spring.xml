@@ -11,12 +11,14 @@
 			<list>
 				<value>classpath:config/properties/jdbc.properties</value>
 				<value>classpath:config/properties/redis.properties</value>
+				<value>classpath:config/properties/es.properties</value>
 			</list>
 		</property>
 	</bean>
 	<context:annotation-config />
+	
 	<!-- 配置component所在的包，自动加载需要管理的Bean -->
-	<context:component-scan base-package="com"></context:component-scan>
+	<context:component-scan base-package="com.**.impl,com.**.controller,com.wemall.user.realm"></context:component-scan>
 	<!-- 引入mybatis配置 -->
 	<import resource="spring-mybatis.xml"/>
 	<!-- 引入shrio -->
@@ -26,5 +28,7 @@
 	<import resource="consumer.xml"/>
 	<!-- mq的配置文件 -->
 	<import resource="activitymq.xml"/> 
+	<!-- es配置文件 -->
+	<import resource="spring-es.xml"/>
 </beans>  
  

@@ -15,6 +15,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,20 @@ import com.wemall.shopcategories.service.CategoriesService;
 import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
+import comm.elasticsearch.dao.EmployeeRepository;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+	//@Autowired
+    //private EmployeeRepository employeeRepository;	
 
 	/*@Autowired  
     private HttpServletRequest request; 
 	*/
+	
+    @Autowired//(required=false)
+    private ElasticsearchTemplate esTemplate; 
 	@Autowired
 	private RedisTemplateUtil redisTemplateUtil;
 	

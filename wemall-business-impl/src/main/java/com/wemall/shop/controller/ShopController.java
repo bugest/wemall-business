@@ -18,8 +18,6 @@ import com.wemall.shop.service.ShopService;
 public class ShopController {
 	
 	@Autowired
-	private Shop shop;
-	@Autowired
 	private ShopService shopService;
 
 	@RequestMapping("/selectById")
