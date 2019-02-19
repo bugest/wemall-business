@@ -44,7 +44,7 @@
 
 <!--build部分-->
     <build>
-        <finalName>xxx</finalName>
+        <finalName>wemall-business-web</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>

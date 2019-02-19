@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.LoginConfig;
+import com.elasticsearch.entity.Employee;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
@@ -37,8 +38,8 @@ import comm.elasticsearch.dao.EmployeeRepository;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	//@Autowired
-    //private EmployeeRepository employeeRepository;	
+	@Autowired
+    private EmployeeRepository employeeRepository;	
 
 	/*@Autowired  
     private HttpServletRequest request; 
@@ -65,6 +66,20 @@ public class UserController {
 */	
 	@Autowired
 	private CategoriesService categoriesService;
+	
+	@RequestMapping("addes")
+	@ResponseBody
+	public String addEs() {
+		Employee employee = new Employee();
+        employee.setId("1");
+        employee.setFirstName("xuxu");
+        employee.setLastName("zh");
+        employee.setAge(26);
+        employee.setAbout("i am in peking");
+        employeeRepository.save(employee);
+        System.err.println("add a obj");
+        return "success";
+	}
 	
 	@ResponseBody
 	@RequestMapping("login")
@@ -131,10 +146,10 @@ public class UserController {
 	
 	@RequestMapping("send")
 	@ResponseBody
-	public String sendmq(String destination, String msg, int priority) { 
+	public String sendmq(String destination, String msg, String name) { 
 		Shop selectByPrimaryKey = shopService.selectByPrimaryKey("1");
 		//messageService.sendMessage(destination, JSON.toJSONString( selectByPrimaryKey));
-		messageService.sendMessage(destination, msg, priority);
+		messageService.sendMessage(destination, msg, name);
 		return "0k";
 	}
 	

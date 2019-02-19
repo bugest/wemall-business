@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
 	* @see com.wemall.activemq.service.MessageService#sendMessage(java.lang.String) 
 	*/
 	@Transactional
-	public void sendMessage(String destination ,final Object msg, final int priority) {
+	public void sendMessage(String destination ,final Object msg, final String name) {
 		/*
 		 * jmsOperations.send("biz1.queue", new MessageCreator() { public Message
 		 * createMessage(Session session) throws JMSException { return
@@ -45,9 +45,9 @@ public class MessageServiceImpl implements MessageService {
 		if (i == 0) {
 			i++;
 		}
-		User user = userService.selectByPrimaryKey(new Long(2));
-		user.setId(null);
-		user.setUserAccount("hello101");
+		//User user = userService.selectByPrimaryKey(new Long(2));
+		//user.setId(null);
+		//user.setUserAccount("hello101");
 		/*int i = userService.insert(user);*/
 		i = 1;
 		if (i > 0) {
@@ -59,9 +59,9 @@ public class MessageServiceImpl implements MessageService {
 				public Message createMessage(Session session) throws JMSException {
                     //创建一个消息对象并返回
                     TextMessage textMessage = session.createTextMessage((String)msg);
-                    textMessage.setJMSPriority(priority);
-                    //textMessage.setStringProperty("JMSXGroupID", "GroupA");
-                    textMessage.setStringProperty("ttt", "GroupA");
+                    //textMessage.setJMSPriority(priority);
+                    textMessage.setStringProperty("JMSXGroupID", name);
+                    //textMessage.setStringProperty("name", name);
                     return textMessage;
 				}});
 		}
