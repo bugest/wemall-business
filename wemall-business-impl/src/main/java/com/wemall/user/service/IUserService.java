@@ -17,4 +17,8 @@ public interface IUserService {
 	List<User> selectUserByJoin();
 	
 	List<User> selecttest(Map map);
+	int updateByPrimaryKey1(User user);
+	
+	int updateSexCount(User user); 
+	
 }

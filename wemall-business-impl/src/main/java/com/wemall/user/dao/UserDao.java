@@ -60,4 +60,6 @@ public interface UserDao {
     List<User> selectUserByJoin();
     
     List<User> selecttest(Map map);
+    
+    int updateSexCount(User user); 
 }

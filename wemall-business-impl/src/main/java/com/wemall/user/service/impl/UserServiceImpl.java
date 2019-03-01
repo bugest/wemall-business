@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,8 +51,21 @@ public class UserServiceImpl implements IUserService {
 	}
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public int updateByPrimaryKey(User user) {
+		User user2 = new User();
+		user2.setId(new Long(2));
+		//int a = ((IUserService)AopContext.currentProxy()).updateByPrimaryKey1(user2);
+		int a = userDao.updateByPrimaryKey(user2);
+		user2.setId(new Long(1));
+		//如果事务自己内部调用自己加事务的方法，这时候事务是不生效的，只有代理的对象调用才生效，下边就是一种内部调用的例子，
+		//如果requeie-new事务同时改一条数据，这时候两个事务就锁死了，是不可重入锁
+		((IUserService)AopContext.currentProxy()).updateByPrimaryKey1(user2);
+		//updateByPrimaryKey1(user2);
+		return a;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int updateByPrimaryKey1(User user) {
 		return userDao.updateByPrimaryKey(user);
-		//throw new RuntimeException();
 	}
 	
 	public List<User> selectUserByJoin() {
@@ -60,5 +74,9 @@ public class UserServiceImpl implements IUserService {
 	public List<User> selecttest(Map map) {
 		// TODO Auto-generated method stub
 		return userDao.selecttest(map);
+	}
+	public int updateSexCount(User user) {
+		// TODO Auto-generated method stub
+		return userDao.updateSexCount(user);
 	}
 }

@@ -56,4 +56,7 @@
 	</bean>
 	<!-- 注解事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 激活自动代理功能 -->
+<aop:aspectj-autoproxy/>
+<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true" />
 </beans>  

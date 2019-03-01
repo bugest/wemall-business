@@ -20,7 +20,7 @@
 		<property name="prefetchPolicy" ref="prefetchPolicy"></property>
 		</amq:connectionFactory> -->
 		<amq:connectionFactory id="amqConnectionFactory" 
-		brokerURL="failover:(tcp://127.0.0.1:61616,tcp://127.0.0.1:61617,tcp://127.0.0.1:61618)?randomize=false" userName="admin" password="admin" exclusiveConsumer="false" >
+		brokerURL="failover:(tcp://127.0.0.1:61616,tcp://127.0.0.1:61617,tcp://127.0.0.1:61618)?randomize=false" userName="admin" password="admin"  exclusiveConsumer="false" >
 		<property name="prefetchPolicy" ref="prefetchPolicy"></property>
 		</amq:connectionFactory>
 	<!-- Spring Caching连接工厂 -->
@@ -67,7 +67,7 @@
 
 	<!-- 定义Queue监听器 -->
 	<!-- transaction-manager="jmsTransactionManager" --> 
-	<jms:listener-container destination-type="queue"  container-type="default" acknowledge="client" connection-factory="mqconnectionFactory">
+	<jms:listener-container destination-type="queue"  container-type="default"  acknowledge="client" connection-factory="mqconnectionFactory">
 		<jms:listener destination="test" ref="myMessageHandler" />
  		<jms:listener destination="test" ref="myMessageHandler1" />
 		<jms:listener destination="test" ref="myMessageHandler2" />

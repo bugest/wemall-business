@@ -1,8 +1,12 @@
 package com.wemall.user.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -10,18 +14,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.math.util.MathUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.LoginConfig;
+import com.alibaba.fastjson.JSON;
 import com.elasticsearch.entity.Employee;
 import com.wemall.activemq.service.MessageService;
 import com.wemall.jwt.service.impl.JwtToken;
@@ -34,16 +46,18 @@ import com.wemall.user.entity.User;
 import com.wemall.user.service.IUserService;
 
 import comm.elasticsearch.dao.EmployeeRepository;
-
+import java.util.Random;
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
     private EmployeeRepository employeeRepository;	
 
-	/*@Autowired  
+	@Autowired  
     private HttpServletRequest request; 
-	*/
+	
+	@Autowired
+    private RedisTemplate redisTemplate; 
 	
     @Autowired//(required=false)
     private ElasticsearchTemplate esTemplate; 
@@ -61,6 +75,7 @@ public class UserController {
 	@Autowired
 	private ShopService shopService;
 	
+	
 /*	@Autowired
 	private DemoService demoService;
 */	
@@ -77,7 +92,32 @@ public class UserController {
         employee.setAge(26);
         employee.setAbout("i am in peking");
         employeeRepository.save(employee);
+        Employee employee1 = new Employee();
+        employee1.setId("2");
+        employee1.setFirstName("nan");
+        employee1.setLastName("li");
+        employee1.setAge(29);
+        employee1.setAbout("i am in tianjin");
+        employeeRepository.save(employee1);
         System.err.println("add a obj");
+        Employee queryEmployeeById = employeeRepository.queryEmployeeById("1");
+        Iterable<Employee> findAll = employeeRepository.findAll();
+        Optional<Employee> findById = employeeRepository.findById("1");
+        Optional<Employee> findById2 = employeeRepository.findById("2");
+        Employee queryEmployeeByLastName = employeeRepository.queryEmployeeByLastName("z");
+        Employee queryEmployeeByLastName2 = employeeRepository.queryEmployeeByLastName("zh");
+        Employee queryEmployeeByLastName3 = employeeRepository.queryEmployeeByLastName("a");
+        Employee findByLastName = employeeRepository.findByLastName("z");
+        Employee findByLastName2 = employeeRepository.findByLastName("zh");
+        Employee findByLastName3 = employeeRepository.findByLastName("a");
+        List<Employee> findByLastNameOrFirstName = employeeRepository.findByLastNameOrFirstName("zh", "nan");
+        List<Employee> findByLastNameOrFirstName2 = employeeRepository.findByLastNameOrFirstName("zh1", "xuxu");
+        List<Employee> findByLastNameOrFirstName3 = employeeRepository.findByLastNameOrFirstName("zh1", "xuxu1");
+        List<Employee> findByLastNameOrFirstNameLike = employeeRepository.findByLastNameOrFirstNameLike("zh", "nan");
+        List<Employee> findByLastNameAndFirstName = employeeRepository.findByLastNameAndFirstName("zh", "xuxu");
+        List<Employee> findByLastNameAndFirstName2 = employeeRepository.findByLastNameAndFirstName("zh1", "xuxu");
+        Pageable pageable = new PageRequest(0, 50);
+        Page<Employee> findByLastNameOrFirstNameNot = employeeRepository.findByLastNameOrFirstNameNot("12", "23", pageable);
         return "success";
 	}
 	
@@ -124,11 +164,47 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping("test")
-	public String testredis() {
+	public List<String> testredis(HttpServletResponse response) {
+		response.addHeader("Set-Cookie", "uid1=112; Path=/; HttpOnly");
+
+		//设置多个cookie
+		response.addHeader("Set-Cookie", "uid2=112; Path=/; HttpOnly");
+		response.addHeader("Set-Cookie", "timeout=30; Path=/test; HttpOnly");
+
+		//设置https的cookie
+		response.addHeader("Set-Cookie", "uid=112; Path=/123; Secure; HttpOnly");
 		List<String> a = new ArrayList<String>();
 		a.add("1");
 		redisTemplateUtil.set("1", a);
-		return (String) redisTemplateUtil.get("1");
+ 		List<String> s = (List<String>) redisTemplateUtil.get("1");
+ 		HashMap<String, String> hashMap = new HashMap<String, String>();
+ 		ArrayList arrayList = new ArrayList();
+ 		redisTemplate.opsForZSet().add("huhu", hashMap, 1);
+ 		redisTemplate.opsForZSet().add("huhu", hashMap, 2);
+ 		redisTemplate.opsForZSet().add("huhu", arrayList, 1);
+ 		List a1= new ArrayList(); 
+ 		a1.add("sadsdf");
+ 		redisTemplate.opsForZSet().add("huhu", a1, 2);
+ 		HashMap hashMap2 = new HashMap();
+ 		hashMap2.put("nihao", 1);
+ 		HashMap hashMap3 = new HashMap();
+ 		hashMap3.put("nihao", "1");
+ 		HashMap hashMap4 = new HashMap();
+ 		hashMap4.put("nihao", "1");
+ 		HashMap hashMap5 = new HashMap();
+ 		User u = new User();
+ 		u.setId(new Long(3322));
+ 		hashMap5.put("nihao", u);
+ 		String jsonString2 = JSON.toJSONString(hashMap2);
+ 		String jsonString3 = JSON.toJSONString(hashMap3);
+ 		String jsonString4 = JSON.toJSONString(hashMap4);
+ 		String jsonString5 = JSON.toJSONString(hashMap5);
+ 		redisTemplate.opsForZSet().add("ww", jsonString2, 1);
+ 		redisTemplate.opsForZSet().add("ww", jsonString3, 1);
+ 		redisTemplate.opsForZSet().add("ww", jsonString4, 2);
+ 		redisTemplate.opsForZSet().add("ww", jsonString5, 2);
+ 		return s;
+ 		
 
 	}
 	
@@ -238,6 +314,40 @@ public class UserController {
 		Cookie cookie = new Cookie("redissessionid", redissessionid);
 		response.addCookie(cookie);
 		return "";
+	}
+	
+	@RequestMapping("updateSexCount")
+	@ResponseBody
+	public int updateSexCount(User user) {
+		//int a = userService.updateSexCount(user);
+		redisTemplate.opsForValue().increment("count", -1);
+		return 1;
+	}
+	
+	@Test
+	public void ss() {
+		spilte(2, new BigDecimal(1.13));
+	}
+	
+	private void spilte(int count, BigDecimal amount) {
+		BigDecimal leftMoney = amount;
+		ArrayList<BigDecimal> arrayList = new ArrayList<BigDecimal>();
+		//初始化总个数等于0.01
+		for (int i = 0; i < count; i++) {
+			arrayList.add(new BigDecimal(0.01));
+			leftMoney = leftMoney.subtract(new BigDecimal(0.01));
+		}
+		while (leftMoney.compareTo(BigDecimal.ZERO) > 0) {
+			Random random = new Random();
+			int nextInt = random.nextInt();
+			int i = Math.abs(nextInt%count);
+			leftMoney = leftMoney.subtract(new BigDecimal(0.01));
+			arrayList.set(i, arrayList.get(i).add(new BigDecimal(0.01)));
+		}
+		for (int i=0; i < count; i++) {
+			arrayList.set(i, arrayList.get(i).setScale(2, BigDecimal.ROUND_DOWN));
+		}
+		System.out.println(arrayList);
 	}
 	
 	

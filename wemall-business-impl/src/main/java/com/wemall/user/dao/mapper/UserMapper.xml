@@ -316,5 +316,9 @@
 		where id = #{id,jdbcType=BIGINT}
 	</update>
 	
+	<update id="updateSexCount" parameterType="com.wemall.user.entity.User">
+		update sys_user set user_sex=user_sex - 1 where id = #{id} and user_sex - 1 >=0
+	</update>
+	
 
 </mapper>

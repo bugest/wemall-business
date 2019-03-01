@@ -1,7 +1,10 @@
 package comm.elasticsearch.dao;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
 import com.elasticsearch.entity.Employee;
 
@@ -16,4 +19,12 @@ public interface EmployeeRepository extends ElasticsearchRepository<Employee,Str
      * @return	
      */
     Employee queryEmployeeById(String id);
+    
+    Employee findByLastName(String lastName);
+    
+    Employee queryEmployeeByLastName(String lastName);
+    List<Employee> findByLastNameAndFirstName(String lastName, String firstName);
+    List<Employee> findByLastNameOrFirstName(String lastName, String firstName);
+    List<Employee> findByLastNameOrFirstNameLike(String lastName, String firstName);
+    Page<Employee> findByLastNameOrFirstNameNot(String lastName, String firstName, Pageable pageable);
 }
