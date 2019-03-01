@@ -58,14 +58,14 @@ public class HongBaoController {
 	@RequestMapping("doscript")
 	public String doscript(String uuid) {
 		//redisTemplate.opsForValue().set("lua", 135);
-		DefaultRedisScript<Integer> getRedisScript;
-		getRedisScript = new DefaultRedisScript<Integer>();
-		getRedisScript.setResultType(Integer.class);
+		DefaultRedisScript<Boolean> getRedisScript;
+		getRedisScript = new DefaultRedisScript<Boolean>();
+		getRedisScript.setResultType(Boolean.class);
         getRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/test.lua")));
         List<String> keyList = new ArrayList<String>();
         Map<String,Object> argvMap = new HashMap<String,Object>();
         keyList.add(uuid);
-        keyList.add("count");
+        keyList.add("leftcount");
         Object o = redisTemplate.execute(getRedisScript, keyList);
         //System.out.println(result);
 /*		DefaultRedisScript<List> getRedisScript1;
