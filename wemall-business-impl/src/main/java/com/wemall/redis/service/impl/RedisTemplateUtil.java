@@ -1,5 +1,6 @@
 package com.wemall.redis.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */  
 @Service
 public class RedisTemplateUtil {  
-  
+	@Qualifier("redisTemplate")
 	@Autowired
     private RedisTemplate redisTemplate;  
   

@@ -1,20 +1,24 @@
 package com.wemall.hongbao.controller;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,52 +26,55 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("hongbao")
 public class HongBaoController {
 	
+	@Qualifier("redisTemplateNoSeri")
 	@Autowired
 	private RedisTemplate redisTemplate;
 	@ResponseBody
 	@RequestMapping("sendHongbao")
-	public String sendHongBao(Integer count, BigDecimal amount) {
+	public String sendHongBao(int count, BigDecimal amount) {
 		String uuid = "hongbao" + "-" + UUID.randomUUID().toString().replaceAll("-","");  
 		HashOperations opsForHash = redisTemplate.opsForHash();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-/*		hashMap.put("id", uuid);
+		hashMap.put("id", uuid);
 		hashMap.put("name", "大吉大利恭喜发财");
-		hashMap.put("amount", amount);
-		hashMap.put("count", count);
-		hashMap.put("leftcount", count);
-		hashMap.put("leftamount", amount);
+		hashMap.put("amount", amount.toString());
+		hashMap.put("count", count + "");
+		hashMap.put("leftcount",  count + "");
+		hashMap.put("leftamount", amount.toString());
 		Date dateBegin = new Date();
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(dateBegin);
 		calendar.add(Calendar.DATE, 1);
 		Date dateEnd = calendar.getTime();
-		hashMap.put("createtime", dateBegin);
-		hashMap.put("endtime", dateEnd);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		hashMap.put("createtime", simpleDateFormat.format(dateBegin));
+		hashMap.put("endtime", simpleDateFormat.format(dateEnd));
 		hashMap.put("team", "11111");
-		opsForHash.put(uuid, "id", uuid);*/
-		opsForHash.put(uuid, "name", "大吉大利恭喜发财");
-		opsForHash.put(uuid, "amount", amount);
-		opsForHash.put(uuid, "count", count);
-		
-		//opsForHash.putAll(uuid, hashMap);
-		//redisTemplate.expireAt(uuid, dateEnd);
+		opsForHash.putAll(uuid, hashMap);
+		redisTemplate.expireAt(uuid, dateEnd);
 		return uuid;
 	}
 	@ResponseBody
 	@RequestMapping("doscript")
-	public String doscript() {
-		DefaultRedisScript<String> getRedisScript;
-		getRedisScript = new DefaultRedisScript<String>();
-        getRedisScript.setResultType(String.class);
+	public String doscript(String uuid) {
+		//redisTemplate.opsForValue().set("lua", 135);
+		DefaultRedisScript<Integer> getRedisScript;
+		getRedisScript = new DefaultRedisScript<Integer>();
+		getRedisScript.setResultType(Integer.class);
         getRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/test.lua")));
         List<String> keyList = new ArrayList<String>();
         Map<String,Object> argvMap = new HashMap<String,Object>();
-        keyList.add("1212");
-        keyList.add("12313");
-        argvMap.put("expire",10000);
-        argvMap.put("times",10);
-        Object o = redisTemplate.execute(getRedisScript, keyList, argvMap);
+        keyList.add(uuid);
+        keyList.add("count");
+        Object o = redisTemplate.execute(getRedisScript, keyList);
         //System.out.println(result);
+/*		DefaultRedisScript<List> getRedisScript1;
+		getRedisScript1 = new DefaultRedisScript<List>();
+		getRedisScript1.setResultType(List.class);
+		getRedisScript1.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/test1.lua")));
+		List<String> keyList1 = new ArrayList<String>();
+		keyList1.add(uuid);
+		Object o1 = redisTemplate.execute(getRedisScript1, keyList1);*/
         return o.toString();
 	}
 	
