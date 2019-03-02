@@ -28,10 +28,11 @@
     </bean>  
     <!-- redis连接工厂 -->  
     <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">  
-        <property name="hostName" value="${redis.host}"></property>  
+       <property name="hostName" value="${redis.host}"></property>  
         <property name="port" value="${redis.port}"></property>  
-        <property name="password" value="${redis.password}"></property>  
+        <property name="password" value="${redis.password}"></property> 
         <property name="poolConfig" ref="jedisConfig"></property>  
+    	<!-- <constructor-arg name="clusterConfig" ref="redisClusterConfiguration"></constructor-arg> -->
     </bean>  
     <!-- redis操作模板，这里采用尽量面向对象的模板 -->  
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">  
@@ -68,7 +69,7 @@
 			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 		</property> 
         <!--开启事务-->  
-        <property name="enableTransactionSupport" value="true"/>  
+        <property name="enableTransactionSupport" value="false"/>  
     </bean>  
     <!-- 配置RedisCacheManager -->
     <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
@@ -82,4 +83,38 @@
         <constructor-arg ref="redisTemplate"/>
         <constructor-arg ref="redisCacheManager"/>
     </bean>   
+    
+
+	<bean id="redisClusterConfiguration"
+		class="org.springframework.data.redis.connection.RedisClusterConfiguration">
+		<property name="maxRedirects" value="5"></property>
+		<property name="clusterNodes">
+			<set>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7000" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7001" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7002" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7003" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7004" />
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="127.0.0.1" />
+					<constructor-arg name="port" value="7005" />
+				</bean>
+			</set>
+		</property>
+	</bean>
 </beans>  
