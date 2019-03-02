@@ -137,4 +137,41 @@
       wid = #{wid.id,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="insertWalletDetail" parameterType="java.util.Map">
+ insert into wallet_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="amonut != null" >
+        amonut,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="wallet != null" >
+        wid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="amonut != null" >
+        #{amonut,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="wallet != null" >
+        #{wallet,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
 </mapper>

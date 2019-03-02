@@ -60,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
                     //创建一个消息对象并返回
                     TextMessage textMessage = session.createTextMessage((String)msg);
                     //textMessage.setJMSPriority(priority);
-                    textMessage.setStringProperty("JMSXGroupID", name);
+                    //textMessage.setStringProperty("JMSXGroupID", name);
                     //textMessage.setStringProperty("name", name);
                     return textMessage;
 				}});

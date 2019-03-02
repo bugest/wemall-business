@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.wemall.activemq.service.MessageService;
+
 @Controller
 @RequestMapping("hongbao")
 public class HongBaoController {
@@ -29,10 +33,14 @@ public class HongBaoController {
 	@Qualifier("redisTemplateNoSeri")
 	@Autowired
 	private RedisTemplate redisTemplate;
+	
+	@Autowired
+	private MessageService messageService;
 	@ResponseBody
 	@RequestMapping("sendHongbao")
-	public String sendHongBao(int count, BigDecimal amount) {
+	public Map sendHongBao(int count, BigDecimal amount) {
 		String uuid = "hongbao" + "-" + UUID.randomUUID().toString().replaceAll("-","");  
+		//生成红包的信息
 		HashOperations opsForHash = redisTemplate.opsForHash();
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("id", uuid);
@@ -46,35 +54,86 @@ public class HongBaoController {
 		calendar.setTime(dateBegin);
 		calendar.add(Calendar.DATE, 1);
 		Date dateEnd = calendar.getTime();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		hashMap.put("createtime", simpleDateFormat.format(dateBegin));
 		hashMap.put("endtime", simpleDateFormat.format(dateEnd));
 		hashMap.put("team", "11111");
 		opsForHash.putAll(uuid, hashMap);
 		redisTemplate.expireAt(uuid, dateEnd);
-		return uuid;
+		List<BigDecimal> spilte = spilte(count, amount);
+		//生成拆分红包的各个明细
+		List detailList = new ArrayList();
+		for (int i = 0; i < spilte.size(); i++) {
+			HashMap detail = new HashMap();
+			String detailUUID = uuid + "-" + i;
+			detail.put("id", detailUUID);
+			detail.put("amount", spilte.get(i).toString());
+			detail.put("hongbaoid", uuid);
+			detailList.add(detail);
+			opsForHash.putAll(detailUUID, detail);
+			redisTemplate.expireAt(detailUUID, dateEnd);
+		}
+		hashMap.put("details", detailList);	
+		return hashMap;
 	}
+	
+	private List<BigDecimal> spilte(int count, BigDecimal amount) {
+		BigDecimal leftMoney = amount;
+		ArrayList<BigDecimal> arrayList = new ArrayList<BigDecimal>();
+		//初始化总个数等于0.01
+		for (int i = 0; i < count; i++) {
+			arrayList.add(new BigDecimal(0.01));
+			leftMoney = leftMoney.subtract(new BigDecimal(0.01));
+		}
+		while (leftMoney.compareTo(BigDecimal.ZERO) > 0) {
+			Random random = new Random();
+			int nextInt = random.nextInt();
+			int i = Math.abs(nextInt%count);
+			leftMoney = leftMoney.subtract(new BigDecimal(0.01));
+			arrayList.set(i, arrayList.get(i).add(new BigDecimal(0.01)));
+		}
+		for (int i=0; i < count; i++) {
+			arrayList.set(i, arrayList.get(i).setScale(2, BigDecimal.ROUND_DOWN));
+		}
+		return arrayList;
+	}
+	
 	@ResponseBody
 	@RequestMapping("doscript")
 	public String doscript(String uuid) {
 		//redisTemplate.opsForValue().set("lua", 135);
-		DefaultRedisScript<Boolean> getRedisScript;
-		getRedisScript = new DefaultRedisScript<Boolean>();
-		getRedisScript.setResultType(Boolean.class);
+		DefaultRedisScript<Long> getRedisScript;
+		getRedisScript = new DefaultRedisScript<Long>();
+		getRedisScript.setResultType(Long.class);
         getRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/test.lua")));
         List<String> keyList = new ArrayList<String>();
         Map<String,Object> argvMap = new HashMap<String,Object>();
         keyList.add(uuid);
         keyList.add("leftcount");
-        Object o = redisTemplate.execute(getRedisScript, keyList);
-        //System.out.println(result);
-/*		DefaultRedisScript<List> getRedisScript1;
-		getRedisScript1 = new DefaultRedisScript<List>();
-		getRedisScript1.setResultType(List.class);
-		getRedisScript1.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/test1.lua")));
-		List<String> keyList1 = new ArrayList<String>();
-		keyList1.add(uuid);
-		Object o1 = redisTemplate.execute(getRedisScript1, keyList1);*/
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formatdate = simpleDateFormat.format(date);
+        Object o = redisTemplate.execute(getRedisScript, keyList, formatdate, "1");
+        //返回剩余数量，如果  <0 就证明领完了
+        Long left = (Long) o;
+        if(left >= 0) {
+        	Object amount = redisTemplate.opsForHash().get(uuid + "-" + o.toString(), "amount");
+            Object wallet = redisTemplate.opsForHash().get(uuid + "-" + o.toString(), "wallet");
+            //发送消息
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("amount", amount);
+            jsonObject.put("wallet", wallet);
+            jsonObject.put("scource_id", uuid + "-" + o.toString());
+            jsonObject.put("scource_type", "hongbao");
+            String jsonString = jsonObject.toJSONString();
+            //1 更细wallet余额 2写明细
+            messageService.sendMessage("hongbaotowritewallet", jsonString, "");
+            //写结果
+            redisTemplate.opsForHash().put(uuid + "-" + o.toString(), "isSend", "1");
+        }
+        
+        
+        //
         return o.toString();
 	}
 	

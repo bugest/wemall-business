@@ -100,4 +100,8 @@
       amount = #{amount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <update id="walletAddMoney" parameterType="java.util.Map">
+  	update wallet set amount = amount + #{money} where id = #{id}
+  </update>
 </mapper>

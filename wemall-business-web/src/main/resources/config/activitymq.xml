@@ -61,16 +61,16 @@
 
 	<bean id="myMessageHandler" class="com.wemall.activemq.service.impl.MyMessageListener" />
 	<bean id="myMessageHandler1" class="com.wemall.activemq.service.impl.MyMessageListener1" />
-	<bean id="myMessageHandler2" class="com.wemall.activemq.service.impl.MyMessageListener2" />
+	<bean id="myMessageHandler2" class="com.wemall.activemq.service.impl.HongBaoToWriteWallet" />
 
 	<!-- 消息消费者 start -->
 
 	<!-- 定义Queue监听器 -->
 	<!-- transaction-manager="jmsTransactionManager" --> 
-	<jms:listener-container destination-type="queue"  container-type="default"  acknowledge="client" connection-factory="mqconnectionFactory">
+	<jms:listener-container destination-type="queue"  container-type="default"  acknowledge="transacted" connection-factory="mqconnectionFactory">
 		<jms:listener destination="test" ref="myMessageHandler" />
  		<jms:listener destination="test" ref="myMessageHandler1" />
-		<jms:listener destination="test" ref="myMessageHandler2" />
+		<jms:listener destination="hongbaotowritewallet" ref="myMessageHandler2" />
 	</jms:listener-container>
 	<!-- 定义Topic监听器 -->
 	<!-- <jms:listener-container destination-type="topic" container-type="default" 

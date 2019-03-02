@@ -1,5 +1,7 @@
 package com.wemall.wallet.dao;
 
+import java.util.Map;
+
 import com.wemall.wallet.entity.WalletDetail;
 
 public interface WalletDetailDao {
@@ -50,4 +52,6 @@ public interface WalletDetailDao {
      * @mbggenerated
      */
     int updateByPrimaryKey(WalletDetail record);
+    
+    int insertWalletDetail(Map map);
 }
