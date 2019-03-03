@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +34,9 @@ public class HongBaoController {
 	@Qualifier("redisTemplateNoSeri")
 	@Autowired
 	private RedisTemplate redisTemplate;
+	
+	//同时只有两个线程并行
+	private Semaphore semaphore = new Semaphore(2);
 	
 	@Autowired
 	private MessageService messageService;
@@ -101,7 +105,9 @@ public class HongBaoController {
 	@ResponseBody
 	@RequestMapping("doscript")
 	public String doscript(String uuid) {
-		//redisTemplate.opsForValue().set("lua", 135);
+		//try {
+			/*semaphore.acquire();*/ //通过semaphore 限制并发数量，可以防止流量都进入后台
+			//redisTemplate.opsForValue().set("lua", 135);
 		DefaultRedisScript<Long> getRedisScript;
 		getRedisScript = new DefaultRedisScript<Long>();
 		getRedisScript.setResultType(Long.class);
@@ -131,10 +137,15 @@ public class HongBaoController {
             //写结果
             redisTemplate.opsForHash().put(uuid + "-" + o.toString(), "isSend", "1");
         }
-        
-        
-        //
         return o.toString();
+	/*	}
+		catch (InterruptedException e) {
+			
+		} finally {
+			semaphore.release();
+		}
+		return null;*/
+		
 	}
 	
 	@ResponseBody
