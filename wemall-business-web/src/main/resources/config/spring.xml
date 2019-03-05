@@ -30,5 +30,7 @@
 	<import resource="activitymq.xml"/> 
 	<!-- es配置文件 -->
 	<import resource="spring-es.xml"/>
+	<import resource="spring-kafka-consumer.xml"/>
+	<import resource="spring-kafka-producer.xml"/>
 </beans>  
  
