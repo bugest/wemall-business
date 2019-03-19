@@ -13,5 +13,6 @@
     <!-- retries="0" dubbo有重试机制 -->
     <!-- url="dubbo://127.0.0.1:20880" 直连-->
     <!-- mock="com.wemall.shopcategories.service.CategoriesServiceMock2"  -->
-    <dubbo:reference id="categoriesService" retries="0"  interface="com.wemall.shopcategories.service.CategoriesService" check="false"  />
+    <dubbo:reference id="categoriesService" retries="0" interface="com.wemall.shopcategories.service.CategoriesService" check="false" />
+    <dubbo:reference id="redisService" timeout="2000" retries="0" interface="com.wemall.redis.service.RedisService" check="false"  />
 </beans>
