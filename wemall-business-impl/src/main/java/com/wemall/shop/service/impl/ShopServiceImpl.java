@@ -31,7 +31,7 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectAllShop();
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public int insert(Shop shop) {
 		return shopDao.insert(shop);
 	}

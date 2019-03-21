@@ -75,8 +75,15 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		return userDao.selecttest(map);
 	}
+	@Transactional
 	public int updateSexCount(User user) {
-		// TODO Auto-generated method stub
-		return userDao.updateSexCount(user);
+		//并发减库存
+		int a = userDao.updateSexCount(user);
+		if (a >0) {
+			//如果上条成功，这里就增加一条数据
+			shopService.insert(new Shop());	
+		}
+		return a;
+		
 	}
 }

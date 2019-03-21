@@ -41,6 +41,7 @@ import com.wemall.jwt.service.impl.JwtToken;
 import com.wemall.redis.service.impl.RedisTemplateUtil;
 import com.wemall.shop.entity.Shop;
 import com.wemall.shop.service.ShopService;
+import com.wemall.shopcategories.entity.Categories;
 import com.wemall.shopcategories.model.CategoryModel;
 import com.wemall.shopcategories.service.CategoriesService;
 import com.wemall.user.entity.User;
@@ -51,8 +52,8 @@ import java.util.Random;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	@Autowired
-    private EmployeeRepository employeeRepository;	
+	/*@Autowired
+    private EmployeeRepository employeeRepository;	*/
 
 	@Autowired  
     private HttpServletRequest request; 
@@ -61,8 +62,8 @@ public class UserController {
 	@Autowired
     private RedisTemplate redisTemplate; 
 	
-    @Autowired//(required=false)
-    private ElasticsearchTemplate esTemplate; 
+    /*@Autowired//(required=false)
+    private ElasticsearchTemplate esTemplate; */
 	@Autowired
 	private RedisTemplateUtil redisTemplateUtil;
 	
@@ -84,7 +85,7 @@ public class UserController {
 	@Autowired
 	private CategoriesService categoriesService;
 	
-	@RequestMapping("addes")
+/*	@RequestMapping("addes")
 	@ResponseBody
 	public String addEs() {
 		Employee employee = new Employee();
@@ -121,7 +122,7 @@ public class UserController {
         Pageable pageable = new PageRequest(0, 50);
         Page<Employee> findByLastNameOrFirstNameNot = employeeRepository.findByLastNameOrFirstNameNot("12", "23", pageable);
         return "success";
-	}
+	}*/
 	
 	@ResponseBody
 	@RequestMapping("login")
@@ -255,6 +256,8 @@ public class UserController {
 			return categoriesService.getCategoryModelList();
 		} catch (Exception e) {
 			System.out.println("捕获到异常");
+			System.out.println(e.getCause());
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -352,5 +355,25 @@ public class UserController {
 		System.out.println(arrayList);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "testdubbo1")
+	public Categories receivemq1(Long id) {
+		try {
+			categoriesService.selectByPrimaryKey(200);
+			return categoriesService.selectByPrimaryKey(100);
+		} catch (Exception e) {
+			System.out.println("捕获到异常");
+			System.out.println(e.getCause());
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
 	
+	@RequestMapping("updateSexCount1")
+	@ResponseBody
+	public int updateSexCount1(User user) {
+		int a = userService.updateSexCount(user);
+		//redisTemplate.opsForValue().increment("count", -1);
+		return a;
+	}
 }
